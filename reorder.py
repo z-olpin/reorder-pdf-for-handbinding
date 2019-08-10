@@ -1,15 +1,10 @@
-#!/home/zach/anaconda3/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 """
-This script re-orients(*not yet*) and re-orders the pages of a pdf in preparation for printing.
+This script re-orders the pages of a pdf in preparation for printing and bookbinding.
 The print imposition created by this script is appropriate for folded single-sheet 8-leaf signatures
 (AKA "gatherings"). If the pdf is not evenly divisable by 16, blank pages are added to fill out
-the last signature.
-
-To do: - make 4-leaf signature option.
-       - default to which imposition requires least blank pages, but allow user to choose if desired
-       - re-orient and collate pages to single sheet of 8 pages (per side, 2 x 4) 
+the last signature. 
 """
 
 import PyPDF2
