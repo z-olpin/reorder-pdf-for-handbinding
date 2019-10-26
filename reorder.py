@@ -1,34 +1,26 @@
 #!/usr/bin/env python3
 
-"""
-This script re-orders the pages of a pdf in preparation for printing and bookbinding.
-The print imposition created by this script is appropriate for folded single-sheet 8-leaf signatures
-(AKA "gatherings"). If the pdf is not evenly divisable by 16, blank pages are added to fill out
-the last signature. 
-"""
-
-import PyPDF2
-from itertools import islice
+from PyPDF2 import PdfFileWriter, PdfFileReader
+import itertools
 import re
 
 def subdiv(iterable, sub_length):
-    """Subdivides any iterable into smaller iterables of length <sublength>"""
+    """Subdivides any iterable into smaller iterables of length `sub_length`"""
     itr = iter(iterable)
-    chunk = list(islice(itr, sub_length))
+    chunk = list(itertools.islice(itr, sub_length))
     while chunk:
         yield chunk
-        chunk = list(islice(itr, sub_length))
+        chunk = list(itertools.islice(itr, sub_length))
 
 def nested_pdf_iter(reader):
-    pages_per_section = int(input('8 or 16 pages per section?: '))
+    pages_per_section = int(input('8 or 16 pages per gathering/signature?: '))
     if pages_per_section == 8 or 16:
         if pages_per_section % 8 == 0:
             pages = [reader.getPage(x) for x in range(reader.numPages)]
             return list(subdiv(pages, pages_per_section))
         else:
             while pages_per_section % 8 != 0:
-                pages_per_section = int(input('pages_per_section needs to be 8 or 16.'))
-                nested_pdf_iter(reader)
+                pages_per_section = int(input('Only 8 or 16 page sections are supported at this time. Please re-enter.'))
 
 def reorderer(nested_pages):
     reordered_pages = []
@@ -50,18 +42,18 @@ def write_reordered(reordered, title):
             writer.addPage(page)
         else:
             writer.addBlankPage()
-    output = open(title + '.pdf', 'wb')
+    output = open(title + '-reordered.pdf', 'wb')
     writer.write(output)
     output.close()
-    print("Your hot 'n' ready pdf awaits")
+    print("Your hot 'n' ready PDF awaits")
 
-pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf"):  ').strip()
+pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf.pdf"):  ').strip()
 if pdf_path[-1] == '/':
     pdf_path = pdf_path[0:-1]
 regex = r"(?P<filename>[\w\-\_]+)(\.|$)"
 title = re.search(regex, pdf_path).groupdict()['filename']
-reader = PyPDF2.PdfFileReader(pdf_path)
-writer = PyPDF2.PdfFileWriter()
+reader = PdfFileReader(pdf_path)
+writer = PdfFileWriter()
 nested_pages = nested_pdf_iter(reader)
 reordered = reorderer(nested_pages)
 write_reordered(reordered, title)
