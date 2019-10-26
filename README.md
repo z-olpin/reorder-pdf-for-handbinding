@@ -1,4 +1,4 @@
-# PDF Reorderer
+# PDF Reorderer for bookbinding
 
 This is a command line program to automate re-ordering a PDF in the manner required for bookbinding projects using folded single-sheet 8 or 16 page signatures (AKA "gatherings"). If the PDF is not evenly divisable by 16, blank pages are written and inserted into the PDF in whichever positions are required to keep blank pages together in the rear of book after folding. See [here](https://www.designersinsights.com/designer-resources/understanding-and-working-with-print/) for instructions on folding.
 
@@ -18,8 +18,10 @@ Happy to collaborate if you have any other ideas or want to work on any of the i
 
 ## Usage
 
-This is a single python script that you can run in your terminal. If you are not familiar with the command line, fear not. Just [Download python3](https://www.python.org/downloads/) and then download the only other file in this repository ([```reorder.py```](https://github.com/vxxce/pdf-reorderer/blob/master/reorder.py)). Run the program with the command
+This is a single python script that you can run in your terminal. If you are not comfortable or familiar with using the command line, don't fret! Running thsi program is very simple. Simply [download the Miniconda distro for python3.x](https://docs.conda.io/en/latest/miniconda.html) and then download the only other file in this repository ([```reorder.py```](https://github.com/vxxce/pdf-reorderer/blob/master/reorder.py)). You can then open your terminal and run the program with the following commands:
 ```
-> python3  your/path/to/reorder.py
+> pip3  install  PyPDF2
+>
+> python3  filepath/to/your/download/of/reorder.py
 ``` 
-and follow the few prompts from there!
+and follow the next few prompts from there!
