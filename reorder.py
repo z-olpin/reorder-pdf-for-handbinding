@@ -9,6 +9,7 @@ the last signature.
 
 import PyPDF2
 from itertools import islice
+import re
 
 def subdiv(iterable, sub_length):
     """Subdivides any iterable into smaller iterables of length <sublength>"""
@@ -18,35 +19,24 @@ def subdiv(iterable, sub_length):
         yield chunk
         chunk = list(islice(itr, sub_length))
 
-def create_pdf_reader(pdf=None):
-    if not pdf:
-        pdf = open('pdfs/category-theory.pdf', 'rb')
-        return PyPDF2.PdfFileReader(pdf)
-    else:
-        pdf = open(pdf, 'rb')
-        return PyPDF2.PdfFileReader(pdf)
-
-def create_pdf_writer():
-    return PyPDF2.PdfFileWriter()
-
-def create_nested_pdf_iterable(pdf_reader):
+def nested_pdf_iter(reader):
     pages_per_section = int(input('8 or 16 pages per section?: '))
     if pages_per_section == 8 or 16:
         if pages_per_section % 8 == 0:
-            pages = [pdf_reader.getPage(x) for x in range(pdf_reader.numPages)]
+            pages = [reader.getPage(x) for x in range(reader.numPages)]
             return list(subdiv(pages, pages_per_section))
         else:
             while pages_per_section % 8 != 0:
                 pages_per_section = int(input('pages_per_section needs to be 8 or 16.'))
-                create_nested_pdf_iterable(pdf_reader)
+                nested_pdf_iter(reader)
 
-def pdf_reorderer(nested_pdf_iterable):
+def reorderer(nested_pages):
     reordered_pages = []
-    if len(nested_pdf_iterable[0]) == 16:
+    if len(nested_pages[0]) == 16:
         order = [0, 15, 12, 3, 7, 8, 11, 4, 2, 13, 14, 1, 5, 10, 9, 6]
-    elif len(nested_pdf_iterable[0]) == 8:
+    elif len(nested_pages[0]) == 8:
         order = [0, 7, 3, 4, 6, 1, 5, 2]
-    for section in nested_pdf_iterable:
+    for section in nested_pages:
         for e in order:
             try:
                 reordered_pages.append(section[e])
@@ -54,20 +44,24 @@ def pdf_reorderer(nested_pdf_iterable):
                 reordered_pages.append(None)
     return reordered_pages
 
-def write_reordered_pdf(reordered_pages):
-    for page in reordered_pages:
+def write_reordered(reordered, title):
+    for page in reordered:
         if page:
-            pdf_writer.addPage(page)
+            writer.addPage(page)
         else:
-            pdf_writer.addBlankPage()
-    pdf_output = open('pdfs/cat-theory-reordered.pdf', 'wb')
-    pdf_writer.write(pdf_output)
-    pdf_output.close()
-    print(f'Your hot \'n\' ready pdf awaits')
+            writer.addBlankPage()
+    output = open(title + '.pdf', 'wb')
+    writer.write(output)
+    output.close()
+    print("Your hot 'n' ready pdf awaits")
 
-
-pdf_reader = create_pdf_reader()
-pdf_writer = create_pdf_writer()
-nested_pdf_iterable = create_nested_pdf_iterable(pdf_reader)
-reordered_pages = pdf_reorderer(nested_pdf_iterable)
-write_reordered_pdf(reordered_pages)
+pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf"):  ').strip()
+if pdf_path[-1] == '/':
+    pdf_path = pdf_path[0:-1]
+regex = r"(?P<filename>[\w\-\_]+)(\.|$)"
+title = re.search(regex, pdf_path).groupdict()['filename']
+reader = PyPDF2.PdfFileReader(pdf_path)
+writer = PyPDF2.PdfFileWriter()
+nested_pages = nested_pdf_iter(reader)
+reordered = reorderer(nested_pages)
+write_reordered(reordered, title)
