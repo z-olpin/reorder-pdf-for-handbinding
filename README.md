@@ -6,6 +6,26 @@ At present, only 8- or 16-page signatures are supported.
 
 _______________________________________
 
+## Usage
+
+This is a single python script that you can run from your terminal. Verify you have Python3 installed:
+
+```command
+$ python3 --version
+Python3.X.X
+```
+
+If you do not, [download the Miniconda distro for python3.x](https://docs.conda.io/en/latest/miniconda.html).
+
+Once you have Python3 download the only other file in this repository ([```reorder.py```](https://github.com/vxxce/pdf-reorderer/blob/master/reorder.py)). You can then open your terminal and run the program with the following commands:
+
+```command
+> pip3  install  PyPDF2
+>
+> python3  filepath/to/your/download/of/reorder.py
+``` 
+and follow the prompts from there!
+
 ## Development
 
 I am hoping to improve this program by
@@ -15,13 +35,3 @@ I am hoping to improve this program by
 * reflowing / formatting pdf content to allow for major adjustments to page-dimensions (IMO the standard 8.5 x 11 ratio is not an especially friendly format for most books).
 
 Happy to collaborate if you have any other ideas or want to work on any of the improvements above!
-
-## Usage
-
-This is a single python script that you can run in your terminal. If you are not comfortable or familiar with using the command line, don't fret! Running thsi program is very simple. Simply [download the Miniconda distro for python3.x](https://docs.conda.io/en/latest/miniconda.html) and then download the only other file in this repository ([```reorder.py```](https://github.com/vxxce/pdf-reorderer/blob/master/reorder.py)). You can then open your terminal and run the program with the following commands:
-```
-> pip3  install  PyPDF2
->
-> python3  filepath/to/your/download/of/reorder.py
-``` 
-and follow the next few prompts from there!
