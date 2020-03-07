@@ -49,30 +49,30 @@ def write_reordered(reordered, title):
     print("Your hot 'n' ready PDF awaits.")
     print("You'll find it this directory with '-reordered' appended to the filename.")
 
-pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf.pdf"):  ').strip()
-if pdf_path[-1] == '/':
-    pdf_path = pdf_path[0:-1]
-regex = r"(?P<filename>[\w\-\_]+)(\.|$)"
-title = re.search(regex, pdf_path).groupdict()['filename']
-reader = PdfFileReader(pdf_path)
-if reader.getIsEncrypted():
-    try:
-        reader.decrypt('')
-    except:
-        print("This file was detected as encrypted. Attempted to decrypt with empty password, but failed.")
-        print("If this file is not encrypted with a password, you can try decrypting with QPDF.")
-        print("Please make sure you have installed QPDF before saying yes to the following prompt...")
-        tryWithQPDF = input("Would you like to try decrypting with QPDF?: ")
-        if re.match(r"(y|Y|Yes|yes)", tryWithQPDF):
-            print("Working...")
-            command=f"qpdf --decrypt --replace-input {pdf_path};"
-            os.system(command)
-            reader = PdfFileReader(pdf_path)
-        else:
-            sys.exit()
-writer = PdfFileWriter()
-nested_pages = nested_pdf_iter(reader)
-print("Working...")
-reordered = reorderer(nested_pages)
-write_reordered(reordered, title)
-
+if __name__ == "__main__":
+    pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf.pdf"):  ').strip()
+    if pdf_path[-1] == '/':
+        pdf_path = pdf_path[0:-1]
+    regex = r"(?P<filename>[\w\-\_]+)(\.|$)"
+    title = re.search(regex, pdf_path).groupdict()['filename']
+    reader = PdfFileReader(pdf_path)
+    if reader.getIsEncrypted():
+        try:
+            reader.decrypt('')
+        except:
+            print("This file was detected as encrypted. Attempted to decrypt with empty password, but failed.")
+            print("If this file is not encrypted with a password, you can try decrypting with QPDF.")
+            print("Please make sure you have installed QPDF before saying yes to the following prompt...")
+            tryWithQPDF = input("Would you like to try decrypting with QPDF?: ")
+            if re.match(r"(y|Y|Yes|yes)", tryWithQPDF):
+                print("Working...")
+                command=f"qpdf --decrypt --replace-input {pdf_path};"
+                os.system(command)
+                reader = PdfFileReader(pdf_path)
+            else:
+                sys.exit()
+    writer = PdfFileWriter()
+    nested_pages = nested_pdf_iter(reader)
+    print("Working...")
+    reordered = reorderer(nested_pages)
+    write_reordered(reordered, title)
