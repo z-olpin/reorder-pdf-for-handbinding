@@ -60,8 +60,9 @@ if reader.getIsEncrypted():
         reader.decrypt('')
     except:
         print("This file was detected as encrypted. Attempted to decrypt with empty password, but failed.")
-        print("If this file is not encrypted with a password, you can try decrypting with QPDF")
-        tryWithQPDF = input("Would you like to try decrypting with QPDF? (Y | N): ")
+        print("If this file is not encrypted with a password, you can try decrypting with QPDF.")
+        print("Please make sure you have installed QPDF before saying yes to the following prompt...")
+        tryWithQPDF = input("Would you like to try decrypting with QPDF?: ")
         if re.match(r"(y|Y|Yes|yes)", tryWithQPDF):
             print("Working...")
             command=f"qpdf --decrypt --replace-input {pdf_path};"
@@ -74,3 +75,4 @@ nested_pages = nested_pdf_iter(reader)
 print("Working...")
 reordered = reorderer(nested_pages)
 write_reordered(reordered, title)
+
