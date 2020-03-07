@@ -3,6 +3,7 @@
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import itertools
 import re
+import os
 
 def subdiv(iterable, sub_length):
     """Subdivides any iterable into smaller iterables of length `sub_length`"""
@@ -42,10 +43,11 @@ def write_reordered(reordered, title):
             writer.addPage(page)
         else:
             writer.addBlankPage()
-    output = open(title + '-reordered.pdf', 'wb')
+        output = open(title + '-reordered.pdf', 'wb')
     writer.write(output)
     output.close()
-    print("Your hot 'n' ready PDF awaits")
+    print("Your hot 'n' ready PDF awaits.")
+    print("You'll find it this directory with '-reordered' appended to the filename.")
 
 pdf_path = input('Enter the path to your PDF (e.g. "path/to/your/pdf.pdf"):  ').strip()
 if pdf_path[-1] == '/':
@@ -53,7 +55,22 @@ if pdf_path[-1] == '/':
 regex = r"(?P<filename>[\w\-\_]+)(\.|$)"
 title = re.search(regex, pdf_path).groupdict()['filename']
 reader = PdfFileReader(pdf_path)
+if reader.getIsEncrypted():
+    try:
+        reader.decrypt('')
+    except:
+        print("This file was detected as encrypted. Attempted to decrypt with empty password, but failed.")
+        print("If this file is not encrypted with a password, you can try decrypting with QPDF")
+        tryWithQPDF = input("Would you like to try decrypting with QPDF? (Y | N): ")
+        if re.match(r"(y|Y|Yes|yes)", tryWithQPDF):
+            print("Working...")
+            command=f"qpdf --decrypt --replace-input {pdf_path};"
+            os.system(command)
+            reader = PdfFileReader(pdf_path)
+        else:
+            sys.exit()
 writer = PdfFileWriter()
 nested_pages = nested_pdf_iter(reader)
+print("Working...")
 reordered = reorderer(nested_pages)
 write_reordered(reordered, title)
