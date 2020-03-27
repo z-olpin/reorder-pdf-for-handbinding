@@ -1,6 +1,6 @@
 # PDF Reorderer for bookbinding
 
-This is a command line program to automate re-ordering a PDF in the manner required for bookbinding projects using folded single-sheet 8 or 16 page signatures (AKA "gatherings"). If the PDF is not evenly divisable by 16, blank pages are written and inserted into the PDF in whichever positions are required to keep blank pages together in the rear of book after folding. See [here](https://www.designersinsights.com/designer-resources/understanding-and-working-with-print/) for instructions on folding.
+This is a command line program to automate re-ordering a PDF in the manner required for bookbinding projects using folded single-sheet 8 or 16 page signatures (AKA "gatherings"). If the PDF is not evenly divisable by 16, blank pages are written and inserted into the PDF in whichever positions are required to keep blank pages together in the rear of book after folding. (See below for folding instructions.)
 
 At present, only 8- or 16-page signatures are supported. 
 
@@ -25,6 +25,10 @@ Once you have Python3 download the only other file in this repository ([```reord
 > python3  filepath/to/your/download/of/reorder.py
 ``` 
 and follow the prompts from there!
+
+## Folding
+
+<img src="https://i.pinimg.com/originals/e0/3c/24/e03c244fb8f8ccb23a38462ce0d5533e.jpg" alt="folding diagram" width="500px" />
 
 ## Development
 
