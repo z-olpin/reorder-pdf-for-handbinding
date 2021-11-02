@@ -70,7 +70,7 @@ if __name__ == "__main__":
                 os.system(command)
                 reader = PdfFileReader(pdf_path)
             else:
-                sys.exit()
+                sys.exit(1)
     writer = PdfFileWriter()
     nested_pages = nested_pdf_iter(reader)
     print("Working...")
