@@ -1,6 +1,6 @@
 # PDF Reorderer for bookbinding
 
-This is a command line program to automate re-ordering a PDF in the manner required for bookbinding projects using folded single-sheet 8 or 16 page signatures (AKA "gatherings"). If the PDF is not evenly divisible by 16, blank pages are written and inserted into the PDF in whichever positions are required to keep blank pages together in the rear of book after folding. (See below for folding instructions.)
+This is a command line program to automate re-ordering a PDF in the manner required for bookbinding projects using folded single-sheet 8 or 16 page "signatures" (AKA "gatherings"). If the PDF is not evenly divisible by 16, blank pages are written and inserted into the PDF in whichever positions are required to keep blank pages together in the rear of book after folding. (See below for folding instructions.)
 
 At present, only 8- or 16-page signatures are supported. 
 
